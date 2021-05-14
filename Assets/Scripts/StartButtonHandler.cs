@@ -19,7 +19,7 @@ public class StartButtonHandler : MonoBehaviour
 
     public void PrevScene(int index)
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex -1);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
     }
 
 
