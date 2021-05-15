@@ -6,12 +6,18 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/PhoneVerification.unity
-    guid: 7429f38857477db8f9ce25a3ad527bd3
-  - enabled: 1
-    path: Assets/Scenes/AR Demo.unity
+    path: Assets/Scenes/MainScreen.unity
     guid: a05de9a682182a89f99232bc85c2bdaa
   - enabled: 1
+    path: Assets/Scenes/OnBoarding.unity
+    guid: 46f25af551fe42dde86eeab0a32cc412
+  - enabled: 1
+    path: Assets/Scenes/Favorites.unity
+    guid: cf52e8e6fb41ef54dbe33a43890f38bc
+  - enabled: 1
+    path: Assets/Scenes/PhoneVerification.unity
+    guid: 7429f38857477db8f9ce25a3ad527bd3
+  - enabled: 0
     path: Assets/Scenes/Check Scene.unity
     guid: a30d5761da682b1478d2a49a879a0d95
   m_configObjects:

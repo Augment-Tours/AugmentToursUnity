@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 42554492}
   - component: {fileID: 42554491}
   - component: {fileID: 42554490}
+  - component: {fileID: 42554493}
   m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
@@ -217,6 +218,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 42554488}
   m_CullTransparentMesh: 1
+--- !u!114 &42554493
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 42554488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ea4e1070c242b64a83b9a1f2fadfb2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &298900512
 GameObject:
   m_ObjectHideFlags: 0
@@ -1118,8 +1131,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1470393604}
-        m_TargetAssemblyTypeName: StartButtonHandler, Assembly-CSharp
+      - m_Target: {fileID: 42554493}
+        m_TargetAssemblyTypeName: MenuScript, Assembly-CSharp
         m_MethodName: NextScene
         m_Mode: 3
         m_Arguments:
@@ -1314,7 +1327,6 @@ GameObject:
   - component: {fileID: 1793493483}
   - component: {fileID: 1793493482}
   - component: {fileID: 1793493481}
-  - component: {fileID: 1793493480}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -1342,18 +1354,6 @@ RectTransform:
   m_AnchoredPosition: {x: -155, y: -410}
   m_SizeDelta: {x: 102.9256, y: 24.878}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1793493480
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1793493478}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ba3c32b7189d393295fe5d81b9da76d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1793493481
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1398,9 +1398,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1793493480}
-        m_TargetAssemblyTypeName: StartButtonHandler, Assembly-CSharp
-        m_MethodName: NextScene
+      - m_Target: {fileID: 42554493}
+        m_TargetAssemblyTypeName: MenuScript, Assembly-CSharp
+        m_MethodName: Signup
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
