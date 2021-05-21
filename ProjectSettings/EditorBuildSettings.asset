@@ -15,8 +15,11 @@ EditorBuildSettings:
     path: Assets/Scenes/Favorites.unity
     guid: cf52e8e6fb41ef54dbe33a43890f38bc
   - enabled: 1
-    path: Assets/Scenes/PhoneVerification.unity
+    path: Assets/Scenes/SignUp.unity
     guid: 7429f38857477db8f9ce25a3ad527bd3
+  - enabled: 1
+    path: Assets/Scenes/New Scene.unity
+    guid: 4a32ce547e5e05b45b1ad041bc82a4eb
   - enabled: 0
     path: Assets/Scenes/Check Scene.unity
     guid: a30d5761da682b1478d2a49a879a0d95
