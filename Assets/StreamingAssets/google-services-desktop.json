@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "932746287928",
+    "firebase_url": "https://augmenttours-default-rtdb.firebaseio.com",
+    "project_id": "augmenttours",
+    "storage_bucket": "augmenttours.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:932746287928:android:1ceccf4ffd44939911ffcd",
+        "android_client_info": {
+          "package_name": "com.ARDemo.AR"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "932746287928-d13d41qkm90m31jctf7lqphtoe0qgn77.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAO3fOYHtCfVkMb44iDgowA_7_yvxPIToI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "932746287928-d13d41qkm90m31jctf7lqphtoe0qgn77.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:932746287928:android:770143568fa7296e11ffcd",
+        "android_client_info": {
+          "package_name": "com.AugmentTours.AR"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "932746287928-d13d41qkm90m31jctf7lqphtoe0qgn77.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAO3fOYHtCfVkMb44iDgowA_7_yvxPIToI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "932746287928-d13d41qkm90m31jctf7lqphtoe0qgn77.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

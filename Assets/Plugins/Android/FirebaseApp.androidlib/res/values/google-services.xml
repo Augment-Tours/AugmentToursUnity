@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:keep="@string/firebase_database_url,@string/gcm_defaultSenderId,@string/google_storage_bucket,@string/project_id,@string/google_api_key,@string/google_crash_reporting_api_key,@string/google_app_id,@string/default_web_client_id">
+  <string name="firebase_database_url" translatable="false">https://augmenttours-default-rtdb.firebaseio.com</string>
+  <string name="gcm_defaultSenderId" translatable="false">932746287928</string>
+  <string name="google_storage_bucket" translatable="false">augmenttours.appspot.com</string>
+  <string name="project_id" translatable="false">augmenttours</string>
+  <string name="google_api_key" translatable="false">AIzaSyAO3fOYHtCfVkMb44iDgowA_7_yvxPIToI</string>
+  <string name="google_crash_reporting_api_key" translatable="false">AIzaSyAO3fOYHtCfVkMb44iDgowA_7_yvxPIToI</string>
+  <string name="google_app_id" translatable="false">1:932746287928:android:770143568fa7296e11ffcd</string>
+  <string name="default_web_client_id" translatable="false">932746287928-d13d41qkm90m31jctf7lqphtoe0qgn77.apps.googleusercontent.com</string>
+</resources>
