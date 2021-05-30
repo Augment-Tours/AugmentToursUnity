@@ -26,6 +26,9 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Check Scene.unity
     guid: a30d5761da682b1478d2a49a879a0d95
+  - enabled: 1
+    path: Assets/Scenes/loading.unity
+    guid: 758ea22d395e3ba45a6ec92733b0b38e
   m_configObjects:
     UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: d270746613215d90a95a964a910ba8f9, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 83df348e694e243d396ede6f4d5bb0bf, type: 2}

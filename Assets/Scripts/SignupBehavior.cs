@@ -42,7 +42,11 @@ public class SignupBehavior : MonoBehaviour
         return auth.CreateUserWithEmailAndPasswordAsync(email, password)
                     .ContinueWithOnMainThread((task) => {
                         // EnableUI();
-                        LogTaskCompletion(task, "User Creation");
+                        bool complete = LogTaskCompletion(task, "User Creation");
+                        if(complete) {
+                          errorText.text = "Signed Up Successfully!";
+                          SceneManager.LoadScene("loading");
+                        }
                         return task;
                     }).Unwrap();
     }
