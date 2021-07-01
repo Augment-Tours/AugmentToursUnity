@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
-
+using UnityEngine.UI;
+using Models;
+using SimpleJSON;
 public class PopulateMuseums : MonoBehaviour
 {
     private const string URL = "https://augment-tours-backend.herokuapp.com/museums/";
@@ -10,6 +12,8 @@ public class PopulateMuseums : MonoBehaviour
     public GameObject prefab;
 
     public int numberToCreate;
+
+    public JSONNode museums;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,11 +28,8 @@ public class PopulateMuseums : MonoBehaviour
 
     void Populate() 
     {
-        GameObject newObj;
         GenerateRequest();
-        for (int i = 0; i < numberToCreate; i++) {
-            newObj = (GameObject) Instantiate(prefab, transform);
-        }
+        
     }
 
     void GenerateRequest(){
@@ -48,8 +49,19 @@ public class PopulateMuseums : MonoBehaviour
             }
             else
             {
+                museums = JSON.Parse(request.downloadHandler.text);
+
                 Debug.Log("Received: " + request.downloadHandler.text);
+                Debug.Log("Received - objId - " + museums[0]["id"]);
+            
+                GameObject newObj;
+                for (int i = 0; i < museums.Count; i++) {
+                    newObj = (GameObject) Instantiate(prefab, transform);
+                    newObj.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = museums[i]["name"];
+                }
             }
         }
     }
 }
+
+// [{"id":"d9e7a65a-1d79-4776-8249-93c3ddb4ddbb","name":"6k","description":"new museum","image":"url"}]
