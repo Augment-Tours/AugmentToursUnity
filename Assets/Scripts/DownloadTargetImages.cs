@@ -2,17 +2,110 @@ using UnityEngine;
 using UnityEngine.Networking;
 using System.Collections;
 using Vuforia;
+using SimpleJSON;
+using System;
+using Siccity.GLTFUtility;
 
 public class DownloadTargetImages : MonoBehaviour
 {
+    private const string URL = "https://augment-tours-backend.herokuapp.com/targets//museums/d9e7a65a-1d79-4776-8249-93c3ddb4ddbb";
+
+    public JSONNode targets;
+
     void Start()
     {
-        StartCoroutine(CreateImageTargetFromDownloadedTexture());
+        StartCoroutine(ProcessRequest(URL));
+        //StartCoroutine(CreateImageTargetFromDownloadedTexture());
+    }
+
+    private IEnumerator ProcessRequest(string uri)
+    {
+        Debug.Log("in download");
+        using (UnityWebRequest request = UnityWebRequest.Get(uri))
+        {
+
+            yield return request.SendWebRequest();
+
+            if (request.isNetworkError)
+            {
+                Debug.Log("Error: " + request.error);
+            }
+            else
+            {
+                targets = JSON.Parse(request.downloadHandler.text);
+
+                Debug.Log("Received: " + request.downloadHandler.text);
+                Debug.Log("Received - objId - " + targets[0]["id"]);
+            }
+        }
+
+        Debug.Log("in create image");
+        for(int i = 0; i< targets.Count; i++)
+        {
+            Target target = new Target(targets[i]["id"], targets[i]["information"], targets[i]["model"], targets[i]["x_location"], targets[i]["y_location"], targets[i]["floor"], targets[i]["museums_id"]);
+            using (UnityWebRequest uwr = UnityWebRequestTexture.GetTexture(target.model))
+            {
+                yield return uwr.SendWebRequest();
+
+                if (uwr.isNetworkError || uwr.isHttpError)
+                {
+                    Debug.Log(uwr.error);
+                }
+                else
+                {
+                    Debug.Log("model: " + target.model);
+                    var objectTracker = TrackerManager.Instance.GetTracker<ObjectTracker>();
+
+                    // Get downloaded texture once the web request completes
+                    var texture = DownloadHandlerTexture.GetContent(uwr);
+
+                    // get the runtime image source and set the texture
+                    var runtimeImageSource = objectTracker.RuntimeImageSource;
+                    runtimeImageSource.SetImage(texture, 1.4f, "myTargetName");
+
+                    // create a new dataset and use the source to create a new trackable
+                    var dataset = objectTracker.CreateDataSet();
+                    var trackableBehaviour = dataset.CreateTrackable(runtimeImageSource, "myTargetName");
+
+                    // add the DefaultTrackableEventHandler to the newly created game object
+                    trackableBehaviour.gameObject.AddComponent<MyDefaultTrackableEventHandler>();
+
+
+                    // activate the dataset
+                    objectTracker.ActivateDataSet(dataset);
+
+
+                    string filePath = $"{Application.persistentDataPath}/Files/{target.id}.gltf";
+
+
+                    // TODO: add virtual content as child object(s)
+                    GameObject sphere = new GameObject();
+                    DownloadFile(sphere, filePath, "https://firebasestorage.googleapis.com/v0/b/augmenttours.appspot.com/o/3Dmodels%2FBoxVertexColors.gltf?alt=media&token=cc59d272-6bc0-436a-b622-be21ed26b98e", trackableBehaviour);
+
+                    //sphere.transform.SetParent(trackableBehaviour.gameObject.transform);
+                    sphere.transform.position = new Vector3(0.3f, 0.5f, 0);
+
+
+
+                    GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+
+                    cube.transform.SetParent(trackableBehaviour.gameObject.transform);
+                    cube.transform.position = new Vector3(0.5f, 0.3f, 0);
+
+                }
+            }
+
+        }
+
+
+        
     }
 
     IEnumerator CreateImageTargetFromDownloadedTexture()
     {
-        using (UnityWebRequest uwr = UnityWebRequestTexture.GetTexture("https://firebasestorage.googleapis.com/v0/b/augmenttours.appspot.com/o/Targets%2Ftarget1.jpg?alt=media&token=9eefce3d-3d2a-45a0-8f3d-77525dd9df97"))
+      
+        Debug.Log("in create image");
+        using (UnityWebRequest uwr = UnityWebRequestTexture.GetTexture(targets[0]["model"]))
         {
             yield return uwr.SendWebRequest();
 
@@ -22,6 +115,7 @@ public class DownloadTargetImages : MonoBehaviour
             }
             else
             {
+                Debug.Log("model: " + targets[0]["model"]);
                 var objectTracker = TrackerManager.Instance.GetTracker<ObjectTracker>();
 
                 // Get downloaded texture once the web request completes
@@ -37,9 +131,10 @@ public class DownloadTargetImages : MonoBehaviour
 
                 // add the DefaultTrackableEventHandler to the newly created game object
                 trackableBehaviour.gameObject.AddComponent<DefaultTrackableEventHandler>();
-
+                
                 // activate the dataset
                 objectTracker.ActivateDataSet(dataset);
+
 
                 // TODO: add virtual content as child object(s)
                 GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
@@ -52,6 +147,36 @@ public class DownloadTargetImages : MonoBehaviour
                 cube.transform.SetParent(trackableBehaviour.gameObject.transform);
                 cube.transform.position = new Vector3(0.5f, 0.3f, 0);
             }
+        }
+    }
+
+
+    public void DownloadFile(GameObject model, string filePath, string url, DataSetTrackableBehaviour trackable)
+    {
+        Debug.Log("in download file");
+        StartCoroutine(GetFileRequest(filePath, url, (UnityWebRequest req) =>
+        {
+            if (req.isNetworkError || req.isHttpError)
+            {
+                // Log any errors that may happen
+                Debug.Log($"{req.error} : {req.downloadHandler.text}");
+            }
+            else
+            {
+                model = Importer.LoadFromFile(filePath);
+                model.transform.SetParent(trackable.gameObject.transform);
+            }
+        }));
+
+    }
+
+    IEnumerator GetFileRequest(string filePath, string url, Action<UnityWebRequest> callback)
+    {
+        using (UnityWebRequest req = UnityWebRequest.Get(url))
+        {
+            req.downloadHandler = new DownloadHandlerFile(filePath);
+            yield return req.SendWebRequest();
+            callback(req);
         }
     }
 }
