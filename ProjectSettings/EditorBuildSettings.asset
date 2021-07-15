@@ -5,22 +5,22 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/SignUp.unity
     guid: fe09e5e6751bcc5bda2c0e83066c4de3
   - enabled: 1
     path: Assets/Scenes/MainScreen.unity
     guid: a05de9a682182a89f99232bc85c2bdaa
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/OnBoarding.unity
     guid: 46f25af551fe42dde86eeab0a32cc412
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Favorites.unity
     guid: cf52e8e6fb41ef54dbe33a43890f38bc
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/PhoneEntry.unity
     guid: 7429f38857477db8f9ce25a3ad527bd3
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/New Scene.unity
     guid: 4a32ce547e5e05b45b1ad041bc82a4eb
   - enabled: 0
