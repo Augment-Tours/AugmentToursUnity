@@ -8,9 +8,10 @@ using Siccity.GLTFUtility;
 
 public class DownloadTargetImages : MonoBehaviour
 {
-    private const string URL = "https://augment-tours-backend.herokuapp.com/targets//museums/d9e7a65a-1d79-4776-8249-93c3ddb4ddbb";
+    private const string URL = "https://augment-tours-backend.herokuapp.com/targets/museums/c091fb5c-ae4c-407d-b41c-93beb335ce6d";
 
     public JSONNode targets;
+    public JSONNode armodels;
 
     void Start()
     {
@@ -34,8 +35,6 @@ public class DownloadTargetImages : MonoBehaviour
             {
                 targets = JSON.Parse(request.downloadHandler.text);
 
-                Debug.Log("Received: " + request.downloadHandler.text);
-                Debug.Log("Received - objId - " + targets[0]["id"]);
             }
         }
 
@@ -61,36 +60,75 @@ public class DownloadTargetImages : MonoBehaviour
 
                     // get the runtime image source and set the texture
                     var runtimeImageSource = objectTracker.RuntimeImageSource;
-                    runtimeImageSource.SetImage(texture, 1.4f, "myTargetName");
+                    runtimeImageSource.SetImage(texture, 1.4f, target.information);
 
                     // create a new dataset and use the source to create a new trackable
                     var dataset = objectTracker.CreateDataSet();
-                    var trackableBehaviour = dataset.CreateTrackable(runtimeImageSource, "myTargetName");
+                    var trackableBehaviour = dataset.CreateTrackable(runtimeImageSource, target.information);
 
                     // add the DefaultTrackableEventHandler to the newly created game object
                     trackableBehaviour.gameObject.AddComponent<MyDefaultTrackableEventHandler>();
+                    trackableBehaviour.gameObject.AddComponent<BoxCollider>();
+                    //trackableBehaviour.gameObject.AddComponent<ArDescription>();
 
 
                     // activate the dataset
                     objectTracker.ActivateDataSet(dataset);
 
+                    string ARURL = $"https://augment-tours-backend.herokuapp.com/armodels/c091fb5c-ae4c-407d-b41c-93beb335ce6d/{target.floor}";
 
-                    string filePath = $"{Application.persistentDataPath}/Files/{target.id}.gltf";
+                    Debug.Log("url " + ARURL);
+
+                    using (UnityWebRequest request = UnityWebRequest.Get(ARURL))
+                    {
+
+                        yield return request.SendWebRequest();
+
+                        if (request.isNetworkError)
+                        {
+                            Debug.Log("Error: " + request.error);
+                        }
+                        else
+                        {
+                            armodels = JSON.Parse(request.downloadHandler.text);
+
+                        
+                        }
+                    }
+                    for (int j = 0; j < armodels.Count; j++)
+                    {
+                        Armodel armodel = new Armodel(armodels[i]["id"], armodels[i]["name"], armodels[i]["description"], armodels[i]["model"], armodels[i]["x_location"], armodels[i]["y_location"], armodels[i]["floor"], armodels[i]["museums_id"]);
+                        string filePath = $"{Application.persistentDataPath}/Files/{armodel.id}.gltf";
+
+                        Debug.Log("Armodel : " + armodel.model);
+
+                        // TODO: add virtual content as child object(s)
+                        GameObject sphere = new GameObject();
+                        //sphere.gameObject.AddComponent<BoxCollider>();
+                        //sphere.AddComponent<BoxCollider>();
+                        DownloadFile(sphere, filePath, armodel.model, trackableBehaviour);
+
+                     
+                        //sphere.AddComponent<BoxCollider>();
+                        //sphere.transform.SetParent(trackableBehaviour.gameObject.transform);
+                        sphere.transform.position = new Vector3(armodel.x_location, armodel.y_location, 679.2593f);
+                        sphere.transform.parent = GameObject.Find("/Canvas").transform;
+                        Debug.Log("sphere " + sphere);
+                        //cube.AddComponent<BoxCollider>();
 
 
-                    // TODO: add virtual content as child object(s)
-                    GameObject sphere = new GameObject();
-                    DownloadFile(sphere, filePath, "https://firebasestorage.googleapis.com/v0/b/augmenttours.appspot.com/o/3Dmodels%2FBoxVertexColors.gltf?alt=media&token=cc59d272-6bc0-436a-b622-be21ed26b98e", trackableBehaviour);
+                      
 
-                    //sphere.transform.SetParent(trackableBehaviour.gameObject.transform);
-                    sphere.transform.position = new Vector3(0.3f, 0.5f, 0);
+
+                    }
+
 
 
 
                     GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
 
                     cube.transform.SetParent(trackableBehaviour.gameObject.transform);
-                    cube.transform.position = new Vector3(0.5f, 0.3f, 0);
+                    cube.transform.position = new Vector3(0.5f, 0.3f, 679.2593f);
 
                 }
             }
@@ -165,6 +203,8 @@ public class DownloadTargetImages : MonoBehaviour
             {
                 model = Importer.LoadFromFile(filePath);
                 model.transform.SetParent(trackable.gameObject.transform);
+                model.name = "abcd";
+                model.gameObject.AddComponent<BoxCollider>();
             }
         }));
 

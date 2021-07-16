@@ -14,7 +14,7 @@ public class MyDefaultTrackableEventHandler : DefaultTrackableEventHandler
     protected override void OnTrackingLost()
     {
         base.OnTrackingLost();
-        transform.SetParent(null, true);
+        //transform.SetParent(gameObject.GetComponent<>(),true );
     }
 }
 
