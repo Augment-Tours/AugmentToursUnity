@@ -12,9 +12,11 @@ public class DownloadTargetImages : MonoBehaviour
 
     public JSONNode targets;
     public JSONNode armodels;
+  
 
     void Start()
     {
+        
         StartCoroutine(ProcessRequest(URL));
         //StartCoroutine(CreateImageTargetFromDownloadedTexture());
     }
@@ -68,7 +70,7 @@ public class DownloadTargetImages : MonoBehaviour
 
                     // add the DefaultTrackableEventHandler to the newly created game object
                     trackableBehaviour.gameObject.AddComponent<MyDefaultTrackableEventHandler>();
-                    trackableBehaviour.gameObject.AddComponent<BoxCollider>();
+                    //trackableBehaviour.gameObject.AddComponent<BoxCollider>();
                     //trackableBehaviour.gameObject.AddComponent<ArDescription>();
 
 
@@ -106,13 +108,14 @@ public class DownloadTargetImages : MonoBehaviour
                         GameObject sphere = new GameObject();
                         //sphere.gameObject.AddComponent<BoxCollider>();
                         //sphere.AddComponent<BoxCollider>();
-                        DownloadFile(sphere, filePath, armodel.model, trackableBehaviour);
+                        DownloadArmodel(sphere, filePath, armodel, trackableBehaviour);
 
                      
                         //sphere.AddComponent<BoxCollider>();
                         //sphere.transform.SetParent(trackableBehaviour.gameObject.transform);
                         sphere.transform.position = new Vector3(armodel.x_location, armodel.y_location, 679.2593f);
                         sphere.transform.parent = GameObject.Find("/Canvas").transform;
+                        //sphere.name = armodel.id;
                         Debug.Log("sphere " + sphere);
                         //cube.AddComponent<BoxCollider>();
 
@@ -125,17 +128,17 @@ public class DownloadTargetImages : MonoBehaviour
 
 
 
-                    GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                    //GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
 
-                    cube.transform.SetParent(trackableBehaviour.gameObject.transform);
-                    cube.transform.position = new Vector3(0.5f, 0.3f, 679.2593f);
+                    //cube.transform.SetParent(trackableBehaviour.gameObject.transform);
+                    //cube.transform.position = new Vector3(0.5f, 0.3f, 679.2593f);
 
                 }
             }
 
         }
 
-
+  
         
     }
 
@@ -189,10 +192,10 @@ public class DownloadTargetImages : MonoBehaviour
     }
 
 
-    public void DownloadFile(GameObject model, string filePath, string url, DataSetTrackableBehaviour trackable)
+    public void DownloadArmodel(GameObject model, string filePath, Armodel armodel, DataSetTrackableBehaviour trackable)
     {
         Debug.Log("in download file");
-        StartCoroutine(GetFileRequest(filePath, url, (UnityWebRequest req) =>
+        StartCoroutine(GetFileRequest(filePath, armodel.model, (UnityWebRequest req) =>
         {
             if (req.isNetworkError || req.isHttpError)
             {
@@ -203,7 +206,8 @@ public class DownloadTargetImages : MonoBehaviour
             {
                 model = Importer.LoadFromFile(filePath);
                 model.transform.SetParent(trackable.gameObject.transform);
-                model.name = "abcd";
+                model.name = armodel.id;
+                //model.transform.localScale = new Vector3(50f, 50f, 50f);
                 model.gameObject.AddComponent<BoxCollider>();
             }
         }));
@@ -219,4 +223,6 @@ public class DownloadTargetImages : MonoBehaviour
             callback(req);
         }
     }
+
+    
 }
