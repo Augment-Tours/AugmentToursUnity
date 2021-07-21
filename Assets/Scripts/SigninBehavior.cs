@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class SignupBehavior : MonoBehaviour
+public class SigninBehavior : MonoBehaviour
 {
     public TMP_InputField emailTextBox;
     public TMP_InputField passwordTextBox;
@@ -22,31 +22,31 @@ public class SignupBehavior : MonoBehaviour
     {
         Debug.Log("Started Signup script");
         auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
-        signupButton.onClick.AddListener(() => canSubmit());
-        signinButton.onClick.AddListener(() => Login());
+        signinButton.onClick.AddListener(() => canSubmit());
+        signupButton.onClick.AddListener(() => signUp());
     }
 
     private void canSubmit()
     {
         // add some validation for password and confirm password here.
-        CreateUserWithEmailAsync();
+        LoginUserWithEmailAsync();
     }
 
-    private void Login()
+    private void signUp()
     {
-      SceneManager.LoadScene("Signin");
+        SceneManager.LoadScene("SignUp");
     }
 
-    private Task CreateUserWithEmailAsync()
+    private Task LoginUserWithEmailAsync()
     {
         string email = emailTextBox.text;
         string password = passwordTextBox.text;
 
-        Debug.Log(String.Format("Attempting to create user {0}...", email));
-        errorText.text = "Signing up...";
+        Debug.Log(String.Format("Attempting to logging in {0}...", email));
+        errorText.text = "Logging in...";
         // DisableUI();
 
-        return auth.CreateUserWithEmailAndPasswordAsync(email, password)
+        return auth.SignInWithEmailAndPasswordAsync(email, password)
                     .ContinueWithOnMainThread((task) => {
                         // EnableUI();
                         bool complete = LogTaskCompletion(task, "User Creation");
