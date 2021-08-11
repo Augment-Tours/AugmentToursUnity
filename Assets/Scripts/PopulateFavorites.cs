@@ -5,10 +5,10 @@ using UnityEngine.Networking;
 using UnityEngine.UI;
 using Models;
 using SimpleJSON;
-using Firebase.Auth;
-public class PopulateMuseums : MonoBehaviour
+public class PopulateFavorites : MonoBehaviour
 {
-    private const string URL = "https://augment-tours-backend.herokuapp.com/museums/";
+    // make the favorite dynamic based on the logged in user
+    private const string URL = "https://augment-tours-backend.herokuapp.com/favorites/2ec3a896-16db-4fa3-9129-5f1019e2d353";
 
     public GameObject prefab;
 
@@ -18,9 +18,6 @@ public class PopulateMuseums : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        FirebaseAuth auth = FirebaseAuth.DefaultInstance;
-        FirebaseUser user = auth.CurrentUser;
-        Debug.Log("User " + user.Email);
         Populate();
     }
 
