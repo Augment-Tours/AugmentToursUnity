@@ -39,15 +39,19 @@ public class ArDescription : MonoBehaviour
             if (Physics.Raycast(ray, out Hit))
             {
                 //Debug.Log("touch count " + Input.touchCount);
-                arId = Hit.transform.name;
+                arId = Hit.transform.parent.name;
+                //string arID = .ToString();
                 //Debug.Log("clicked AR Model " + btnName);
                 //StartCoroutine(Upload(btnName));
-                Debug.Log("ar ID " + arId);
+                Debug.Log("ar ID " + Hit.transform.name);
                 descriptionPanel.SetActive(true);
                 GameObject modelTitle = GameObject.Find("ModelTitle");
                 GameObject modelDescription = GameObject.Find("ModelDescription");
-                Button favButton = descriptionPanel.GetComponentInChildren<Button>();
+                Button favButton = GameObject.Find("Favbtn").GetComponent<Button>();
                 favButton.onClick.AddListener(() => addFavorite(arId));
+
+                Button closeButton = GameObject.Find("Closebtn").GetComponent<Button>();
+                closeButton.onClick.AddListener(() => closeDescription(descriptionPanel));
                 //GameObject favebtn = GameObject.Find("Favbtn");
                 //favebtn.AddComponent<>
                 Debug.Log("model description " + modelDescription);
@@ -80,6 +84,11 @@ public class ArDescription : MonoBehaviour
     void addFavorite(string id)
     {
         StartCoroutine(Upload(id));
+    }
+
+    void closeDescription(GameObject panel)
+    {
+        panel.SetActive(false);
     }
 
     IEnumerator Upload(string armodels_id)

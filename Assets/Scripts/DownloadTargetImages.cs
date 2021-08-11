@@ -97,12 +97,14 @@ public class DownloadTargetImages : MonoBehaviour
                         
                         }
                     }
+
                     for (int j = 0; j < armodels.Count; j++)
                     {
-                        Armodel armodel = new Armodel(armodels[i]["id"], armodels[i]["name"], armodels[i]["description"], armodels[i]["model"], armodels[i]["x_location"], armodels[i]["y_location"], armodels[i]["floor"], armodels[i]["museums_id"]);
+                        Armodel armodel = new Armodel(armodels[j]["id"], armodels[j]["name"], armodels[j]["description"], armodels[j]["model"], armodels[j]["x_location"], armodels[j]["y_location"], armodels[j]["floor"], armodels[j]["museums_id"]);
                         string filePath = $"{Application.persistentDataPath}/Files/{armodel.id}.gltf";
 
-                        Debug.Log("Armodel : " + armodel.model);
+
+                        Debug.Log("Armodel "+j +" " + armodel.model);
 
                         // TODO: add virtual content as child object(s)
                         GameObject sphere = new GameObject();
@@ -207,8 +209,16 @@ public class DownloadTargetImages : MonoBehaviour
                 model = Importer.LoadFromFile(filePath);
                 model.transform.SetParent(trackable.gameObject.transform);
                 model.name = armodel.id;
-                //model.transform.localScale = new Vector3(50f, 50f, 50f);
-                model.gameObject.AddComponent<BoxCollider>();
+                Debug.Log("Debugging ");
+                model.transform.localScale = new Vector3(20f, 20f, 20f);
+                //Type bodyType = GameObject.Find("body").GetType();
+                //Debug.Log("Type " + bodyType.ToString());
+                GameObject.Find(armodel.id+"/body").AddComponent<BoxCollider>();
+                //model.GetComponent < UnityEngine.GameObject.Find("tiger");
+                //Debug.Log("Game Object "+)>());s
+
+
+               model.gameObject.AddComponent<BoxCollider>();
             }
         }));
 
