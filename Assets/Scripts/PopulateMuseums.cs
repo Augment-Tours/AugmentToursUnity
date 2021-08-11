@@ -5,6 +5,7 @@ using UnityEngine.Networking;
 using UnityEngine.UI;
 using Models;
 using SimpleJSON;
+using Firebase.Auth;
 public class PopulateMuseums : MonoBehaviour
 {
     private const string URL = "https://augment-tours-backend.herokuapp.com/museums/";
@@ -17,6 +18,9 @@ public class PopulateMuseums : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        FirebaseAuth auth = FirebaseAuth.DefaultInstance;
+        FirebaseUser user = auth.CurrentUser;
+        Debug.Log("User " + user.Email);
         Populate();
     }
 
