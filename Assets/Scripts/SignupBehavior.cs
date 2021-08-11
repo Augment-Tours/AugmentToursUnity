@@ -1,9 +1,11 @@
 using System;
+using System.Collections;
 using System.Threading.Tasks;
 using Firebase.Auth;
 using Firebase.Extensions;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -11,6 +13,7 @@ public class SignupBehavior : MonoBehaviour
 {
     public TMP_InputField emailTextBox;
     public TMP_InputField passwordTextBox;
+    public TMP_InputField nameTextBox;
 
     public TMP_Text errorText;
     public Button signupButton;
@@ -30,6 +33,7 @@ public class SignupBehavior : MonoBehaviour
     {
         // add some validation for password and confirm password here.
         CreateUserWithEmailAsync();
+        StartCoroutine(addUser(nameTextBox.text, emailTextBox.text, passwordTextBox.text));
     }
 
     private void Login()
@@ -56,6 +60,29 @@ public class SignupBehavior : MonoBehaviour
                         }
                         return task;
                     }).Unwrap();
+    }
+
+    IEnumerator addUser(string name, string email, string password )
+    {
+        Debug.Log("Register user " + name);
+        WWWForm form = new WWWForm();
+        form.AddField("name", name);
+        form.AddField("email", email);
+        form.AddField("password", password);
+
+        using (UnityWebRequest www = UnityWebRequest.Post("https://augment-tours-backend.herokuapp.com/accounts", form))
+        {
+            yield return www.SendWebRequest();
+
+            if (www.result != UnityWebRequest.Result.Success)
+            {
+                Debug.Log(www.error);
+            }
+            else
+            {
+                Debug.Log("Form upload complete!");
+            }
+        }
     }
 
     // Update is called once per frame
