@@ -8,7 +8,8 @@ using Siccity.GLTFUtility;
 
 public class DownloadTargetImages : MonoBehaviour
 {
-    private const string URL = "https://augment-tours-backend.herokuapp.com/targets/museums/c091fb5c-ae4c-407d-b41c-93beb335ce6d";
+    private const string URL = "https://augment-tours-backend.herokuapp.com/targets/type/museums";
+    //private const string URL = "https://augment-tours-backend.herokuapp.com/targets/museums/c091fb5c-ae4c-407d-b41c-93beb335ce6d";
 
     public JSONNode targets;
     public JSONNode armodels;
@@ -62,11 +63,11 @@ public class DownloadTargetImages : MonoBehaviour
 
                     // get the runtime image source and set the texture
                     var runtimeImageSource = objectTracker.RuntimeImageSource;
-                    runtimeImageSource.SetImage(texture, 1.4f, target.information);
+                    runtimeImageSource.SetImage(texture, 1.4f, target.museums_id);
 
                     // create a new dataset and use the source to create a new trackable
                     var dataset = objectTracker.CreateDataSet();
-                    var trackableBehaviour = dataset.CreateTrackable(runtimeImageSource, target.information);
+                    var trackableBehaviour = dataset.CreateTrackable(runtimeImageSource, target.museums_id);
 
                     // add the DefaultTrackableEventHandler to the newly created game object
                     trackableBehaviour.gameObject.AddComponent<MyDefaultTrackableEventHandler>();
@@ -77,63 +78,60 @@ public class DownloadTargetImages : MonoBehaviour
                     // activate the dataset
                     objectTracker.ActivateDataSet(dataset);
 
-                    string ARURL = $"https://augment-tours-backend.herokuapp.com/armodels/c091fb5c-ae4c-407d-b41c-93beb335ce6d/{target.floor}";
+                    //string targetURL = "https://augment-tours-backend.herokuapp.com/targets/museums/c091fb5c-ae4c-407d-b41c-93beb335ce6d";
 
-                    Debug.Log("url " + ARURL);
 
-                    using (UnityWebRequest request = UnityWebRequest.Get(ARURL))
-                    {
 
-                        yield return request.SendWebRequest();
+                    //string ARURL = $"https://augment-tours-backend.herokuapp.com/armodels/c091fb5c-ae4c-407d-b41c-93beb335ce6d/{target.floor}";
 
-                        if (request.isNetworkError)
-                        {
-                            Debug.Log("Error: " + request.error);
-                        }
-                        else
-                        {
-                            armodels = JSON.Parse(request.downloadHandler.text);
+                    //Debug.Log("url " + ARURL);
+
+                    //using (UnityWebRequest request = UnityWebRequest.Get(ARURL))
+                    //{
+
+                    //    yield return request.SendWebRequest();
+
+                    //    if (request.isNetworkError)
+                    //    {
+                    //        Debug.Log("Error: " + request.error);
+                    //    }
+                    //    else
+                    //    {
+                    //        armodels = JSON.Parse(request.downloadHandler.text);
 
                         
-                        }
-                    }
+                    //    }
+                    //}
 
-                    for (int j = 0; j < armodels.Count; j++)
-                    {
-                        Armodel armodel = new Armodel(armodels[j]["id"], armodels[j]["name"], armodels[j]["description"], armodels[j]["model"], armodels[j]["x_location"], armodels[j]["y_location"], armodels[j]["floor"], armodels[j]["museums_id"]);
-                        string filePath = $"{Application.persistentDataPath}/Files/{armodel.id}.gltf";
+                    //for (int j = 0; j < armodels.Count; j++)
+                    //{
+                    //    Armodel armodel = new Armodel(armodels[j]["id"], armodels[j]["name"], armodels[j]["description"], armodels[j]["model"], armodels[j]["x_location"], armodels[j]["y_location"], armodels[j]["floor"], armodels[j]["museums_id"]);
+                    //    string filePath = $"{Application.persistentDataPath}/Files/{armodel.id}.gltf";
 
 
-                        Debug.Log("Armodel "+j +" " + armodel.model);
+                    //    Debug.Log("Armodel "+j +" " + armodel.model);
 
-                        // TODO: add virtual content as child object(s)
-                        GameObject sphere = new GameObject();
-                        //sphere.gameObject.AddComponent<BoxCollider>();
-                        //sphere.AddComponent<BoxCollider>();
-                        DownloadArmodel(sphere, filePath, armodel, trackableBehaviour);
+                    //    // TODO: add virtual content as child object(s)
+                    //    GameObject sphere = new GameObject();
+                    //    //sphere.gameObject.AddComponent<BoxCollider>();
+                    //    //sphere.AddComponent<BoxCollider>();
+                    //    DownloadArmodel(sphere, filePath, armodel, trackableBehaviour);
 
                      
-                        //sphere.AddComponent<BoxCollider>();
-                        //sphere.transform.SetParent(trackableBehaviour.gameObject.transform);
-                        sphere.transform.position = new Vector3(armodel.x_location, armodel.y_location, 679.2593f);
-                        sphere.transform.parent = GameObject.Find("/Canvas").transform;
-                        //sphere.name = armodel.id;
-                        Debug.Log("sphere " + sphere);
-                        //cube.AddComponent<BoxCollider>();
+                    //    //sphere.AddComponent<BoxCollider>();
+                    //    //sphere.transform.SetParent(trackableBehaviour.gameObject.transform);
+                    //    sphere.transform.position = new Vector3(armodel.x_location, armodel.y_location, 679.2593f);
+                    //    sphere.transform.parent = GameObject.Find("/Canvas").transform;
+                    //    //sphere.name = armodel.id;
+                    //    Debug.Log("sphere " + sphere);
+                    //    //cube.AddComponent<BoxCollider>();
 
 
                       
 
 
-                    }
+                    //}
 
-
-
-
-                    //GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-
-                    //cube.transform.SetParent(trackableBehaviour.gameObject.transform);
-                    //cube.transform.position = new Vector3(0.5f, 0.3f, 679.2593f);
 
                 }
             }

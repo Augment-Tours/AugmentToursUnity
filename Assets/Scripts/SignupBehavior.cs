@@ -56,7 +56,7 @@ public class SignupBehavior : MonoBehaviour
                         bool complete = LogTaskCompletion(task, "User Creation");
                         if(complete) {
                           errorText.text = "Signed Up Successfully!";
-                          SceneManager.LoadScene("BrowseMuseums2");
+                          SceneManager.LoadScene("MainScreen");
                         }
                         return task;
                     }).Unwrap();
