@@ -5,10 +5,11 @@ using UnityEngine.Networking;
 using UnityEngine.UI;
 using Models;
 using SimpleJSON;
+using Firebase.Auth;
 public class PopulateFavorites : MonoBehaviour
 {
     // make the favorite dynamic based on the logged in user
-    private const string URL = "https://augment-tours-backend.herokuapp.com/favorites/2ec3a896-16db-4fa3-9129-5f1019e2d353";
+    private const string URL = "https://augment-tours-backend.herokuapp.com/favorites/getBy/email";
 
     public GameObject prefab;
 
@@ -34,11 +35,14 @@ public class PopulateFavorites : MonoBehaviour
     }
 
     void GenerateRequest(){
-        StartCoroutine(ProcessRequest(URL));
+        FirebaseAuth auth = FirebaseAuth.DefaultInstance;
+        FirebaseUser user = auth.CurrentUser;
+        StartCoroutine(ProcessRequest(URL + "?email=" + user.Email));
     }
 
     private IEnumerator ProcessRequest(string uri)
     {
+        Debug.Log(uri);
         using (UnityWebRequest request = UnityWebRequest.Get(uri))
         {
 
