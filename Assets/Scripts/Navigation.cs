@@ -25,8 +25,8 @@ public class Navigation : MonoBehaviour
         SceneManager.LoadScene("BrowseMuseums");
     }
     void ProfilePressed() {
-        // SceneManager.LoadScene("");
-        Debug.Log("Profile Nav Button Pressed");
+        SceneManager.LoadScene("Profile");
+        // Debug.Log("Profile Nav Button Pressed");
     }
 
     void ArModelPressed(){
