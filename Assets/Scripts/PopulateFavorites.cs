@@ -67,33 +67,23 @@ public class PopulateFavorites : MonoBehaviour
                 {
                     newObj = (GameObject)Instantiate(prefab, transform);
                     newObj.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = museums[i]["name"];
-                    // newObj.GetComponentInChildren<>
+                    // newObj.GetComponentInChildren<
+                    // update the image of newObj
+                    var imageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/220px-Image_created_with_a_mobile_phone.png";
+                    var image = newObj.GetComponentInChildren<Image>();
+                    StartCoroutine(LoadImageInternet(imageUrl, image));
                 }
             }
         }
     }
 
-    IEnumerator downloadImage(string url, Image targetImage)
+    IEnumerator LoadImageInternet(string imageUrl,Image web_image)
     {
-        using (www = UnityWebRequestTexture.GetTexture(url))
-        {
-            //Send Request and wait
-            yield return www.SendWebRequest();
-
-            if (www.isHttpError || www.isNetworkError)
-            {
-                Debug.Log("Error while Receiving: " + www.error);
-            }
-            else
-            {
-                Debug.Log("Success");
-
-                //Load Image
-                var texture2d = DownloadHandlerTexture.GetContent(www);
-                var sprite = Sprite.Create(texture2d, new Rect(0, 0, 326, texture2d.height), Vector2.zero);
-                targetImage.sprite = sprite;
-            }
-        }
+        Texture2D tex = new Texture2D(4, 4, TextureFormat.DXT1, false);
+        WWW Link = new WWW(imageUrl);
+        yield return Link;
+        Link.LoadImageIntoTexture(tex);
+        web_image.sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0, 0));
     }
 }
 
