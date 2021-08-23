@@ -5,6 +5,7 @@ using Vuforia;
 using SimpleJSON;
 using System;
 using Siccity.GLTFUtility;
+using TMPro;
 
 public class DownloadTargetImages : MonoBehaviour
 {
@@ -13,13 +14,14 @@ public class DownloadTargetImages : MonoBehaviour
 
     public JSONNode targets;
     public JSONNode armodels;
-  
+    public TMP_Text status;
 
     void Start()
     {
         
         StartCoroutine(ProcessRequest(URL));
         //StartCoroutine(CreateImageTargetFromDownloadedTexture());
+        
     }
 
     private IEnumerator ProcessRequest(string uri)
@@ -77,7 +79,8 @@ public class DownloadTargetImages : MonoBehaviour
 
                     // activate the dataset
                     objectTracker.ActivateDataSet(dataset);
-
+                    
+                    //status.text = "Museum Target Image Scanned";
                     //string targetURL = "https://augment-tours-backend.herokuapp.com/targets/museums/c091fb5c-ae4c-407d-b41c-93beb335ce6d";
 
 

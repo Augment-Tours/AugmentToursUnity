@@ -4,20 +4,28 @@ using UnityEngine;
 using UnityEngine.Networking;
 using Vuforia;
 using SimpleJSON;
+using TMPro;
 
 public class MyDefaultTrackableEventHandler : DefaultTrackableEventHandler
 {
 
     public JSONNode targets;
-    
+    public TMP_Text status;
+
 
     protected override void OnTrackingFound()
     {
         base.OnTrackingFound();
-        Debug.Log(base.gameObject.name);
-        string URL = $"https://augment-tours-backend.herokuapp.com/targets/museums/{base.gameObject.name}";
-        StartCoroutine(ProcessRequest(URL));
-        
+        if (Global.trackedTarget != base.gameObject.name)
+        {
+            Debug.Log(base.gameObject.name);
+            string URL = $"https://augment-tours-backend.herokuapp.com/targets/museums/{base.gameObject.name}";
+            StartCoroutine(ProcessRequest(URL));
+            Global.trackedTarget = base.gameObject.name;
+            status = GameObject.Find("Status").GetComponent<TMP_Text>();
+            status.text = "Museum target Scanned";
+        }
+
     }
 
     protected override void OnTrackingLost()
@@ -83,6 +91,7 @@ public class MyDefaultTrackableEventHandler : DefaultTrackableEventHandler
 
                     // activate the dataset
                     objectTracker.ActivateDataSet(dataset);
+                    
 
                     //string targetURL = "https://augment-tours-backend.herokuapp.com/targets/museums/c091fb5c-ae4c-407d-b41c-93beb335ce6d";
 

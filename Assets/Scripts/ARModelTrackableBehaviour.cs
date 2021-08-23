@@ -3,6 +3,7 @@ using SimpleJSON;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
 using Vuforia;
@@ -12,10 +13,10 @@ public class ARModelTrackableBehaviour : DefaultTrackableEventHandler
 
     public JSONNode targets;
     public JSONNode armodels;
-
+    public TMP_Text status;
     //DataSetTrackableBehaviour trackableBehaviour;
 
-   
+
 
     protected override void OnTrackingFound()
     {
@@ -26,6 +27,8 @@ public class ARModelTrackableBehaviour : DefaultTrackableEventHandler
             string URL = $"https://augment-tours-backend.herokuapp.com/targets/{base.gameObject.name}";
             StartCoroutine(ProcessRequest(URL));
             Global.trackedTarget = base.gameObject.name;
+            status = GameObject.Find("Status").GetComponent<TMP_Text>();
+            status.text = "AR target Scanned";
         }
        
         

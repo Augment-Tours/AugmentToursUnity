@@ -11,26 +11,30 @@ public class SigninBehavior : MonoBehaviour
 {
     public TMP_InputField emailTextBox;
     public TMP_InputField passwordTextBox;
-
-    public TMP_Text errorText;
+    public Button loginButton;
     public Button signupButton;
-    public Button signinButton;
+    public TMP_Text errorText;
+    //public Button signupButton;
+    //public Button signinButton;
     protected Firebase.Auth.FirebaseAuth auth;
 
     // Start is called before the first frame update
     void Start()
     {
         Debug.Log("Started Signup script");
-        auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
-        signinButton.onClick.AddListener(() => canSubmit());
+        //auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
+        //loginButton = GameObject.Find("Login Button").GetComponent<Button>();
+        signupButton = GameObject.Find("Signup Button").GetComponent<Button>();
+        //loginButton.onClick.AddListener(() => canSubmit());
         signupButton.onClick.AddListener(() => signUp());
     }
 
-    private void canSubmit()
-    {
-        // add some validation for password and confirm password here.
-        LoginUserWithEmailAsync();
-    }
+    //private void canSubmit()
+    //{
+    //    // add some validation for password and confirm password here.
+    //    Debug.Log("in can submit");
+    //    LoginUserWithEmailAsync();
+    //}
 
     private void signUp()
     {
