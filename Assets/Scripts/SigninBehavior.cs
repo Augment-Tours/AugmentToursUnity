@@ -22,19 +22,19 @@ public class SigninBehavior : MonoBehaviour
     void Start()
     {
         Debug.Log("Started Signup script");
-        //auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
-        //loginButton = GameObject.Find("Login Button").GetComponent<Button>();
+        auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
+        loginButton = GameObject.Find("Login Button").GetComponent<Button>();
         signupButton = GameObject.Find("Signup Button").GetComponent<Button>();
-        //loginButton.onClick.AddListener(() => canSubmit());
+        loginButton.onClick.AddListener(() => canSubmit());
         signupButton.onClick.AddListener(() => signUp());
     }
 
-    //private void canSubmit()
-    //{
-    //    // add some validation for password and confirm password here.
-    //    Debug.Log("in can submit");
-    //    LoginUserWithEmailAsync();
-    //}
+    private void canSubmit()
+    {
+        // add some validation for password and confirm password here.
+        Debug.Log("in can submit");
+        LoginUserWithEmailAsync();
+    }
 
     private void signUp()
     {

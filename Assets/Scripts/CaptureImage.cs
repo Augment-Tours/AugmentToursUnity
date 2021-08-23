@@ -5,8 +5,7 @@ using UnityEngine.UI;
 
 public class CaptureImage : MonoBehaviour
 {
-    public int superSize = 2;
-    private int _shotIndex = 0;
+
     public GameObject panel;
     public GameObject captureObject; 
     // Start is called before the first frame update
