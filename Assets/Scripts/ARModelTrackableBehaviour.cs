@@ -138,7 +138,7 @@ public class ARModelTrackableBehaviour : DefaultTrackableEventHandler
                 Debug.Log("scale: " + armodel.x_scale);
                 //Type bodyType = GameObject.Find("body").GetType();
                 //Debug.Log("Type " + bodyType.ToString());
-                GameObject.Find(armodel.id + "/body").AddComponent<BoxCollider>();
+                //GameObject.Find("Ground Plane Stage"+ armodel.id + "/body").AddComponent<BoxCollider>();
                 //model.GetComponent < UnityEngine.GameObject.Find("tiger");
                 //Debug.Log("Game Object "+)>());s
 
