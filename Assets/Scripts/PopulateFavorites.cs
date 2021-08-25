@@ -16,6 +16,8 @@ public class PopulateFavorites : MonoBehaviour
     public int numberToCreate;
 
     public JSONNode museums;
+
+    UnityWebRequest www;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,16 +27,17 @@ public class PopulateFavorites : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
-    void Populate() 
+    void Populate()
     {
         GenerateRequest();
-        
+
     }
 
-    void GenerateRequest(){
+    void GenerateRequest()
+    {
         FirebaseAuth auth = FirebaseAuth.DefaultInstance;
         FirebaseUser user = auth.CurrentUser;
         StartCoroutine(ProcessRequest(URL + "?email=" + user.Email));
@@ -58,14 +61,29 @@ public class PopulateFavorites : MonoBehaviour
 
                 Debug.Log("Received: " + request.downloadHandler.text);
                 Debug.Log("Received - objId - " + museums[0]["id"]);
-            
+
                 GameObject newObj;
-                for (int i = 0; i < museums.Count; i++) {
-                    newObj = (GameObject) Instantiate(prefab, transform);
+                for (int i = 0; i < museums.Count; i++)
+                {
+                    newObj = (GameObject)Instantiate(prefab, transform);
                     newObj.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = museums[i]["name"];
+                    // newObj.GetComponentInChildren<
+                    // update the image of newObj
+                    var imageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/220px-Image_created_with_a_mobile_phone.png";
+                    var image = newObj.GetComponentInChildren<Image>();
+                    StartCoroutine(LoadImageInternet(imageUrl, image));
                 }
             }
         }
+    }
+
+    IEnumerator LoadImageInternet(string imageUrl,Image web_image)
+    {
+        Texture2D tex = new Texture2D(4, 4, TextureFormat.DXT1, false);
+        WWW Link = new WWW(imageUrl);
+        yield return Link;
+        Link.LoadImageIntoTexture(tex);
+        web_image.sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0, 0));
     }
 }
 
