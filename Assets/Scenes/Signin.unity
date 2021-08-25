@@ -1146,7 +1146,6 @@ GameObject:
   - component: {fileID: 921830990}
   - component: {fileID: 921830989}
   - component: {fileID: 921830988}
-  - component: {fileID: 921830991}
   m_Layer: 5
   m_Name: Signup Button
   m_TagString: Untagged
@@ -1268,23 +1267,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 921830986}
   m_CullTransparentMesh: 1
---- !u!114 &921830991
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 921830986}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8451f30ccca4782a9b0a1f66390b2355, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  emailTextBox: {fileID: 1907005426}
-  passwordTextBox: {fileID: 624133608}
-  loginButton: {fileID: 1797176861}
-  signupButton: {fileID: 921830988}
-  errorText: {fileID: 1179540299}
 --- !u!1 &1179540296
 GameObject:
   m_ObjectHideFlags: 0
@@ -2113,7 +2095,6 @@ GameObject:
   - component: {fileID: 1797176863}
   - component: {fileID: 1797176862}
   - component: {fileID: 1797176861}
-  - component: {fileID: 1797176865}
   m_Layer: 5
   m_Name: Login Button
   m_TagString: Untagged
@@ -2235,23 +2216,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -276}
   m_SizeDelta: {x: 600, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1797176865
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1797176860}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8451f30ccca4782a9b0a1f66390b2355, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  emailTextBox: {fileID: 1907005426}
-  passwordTextBox: {fileID: 624133608}
-  loginButton: {fileID: 0}
-  signupButton: {fileID: 0}
-  errorText: {fileID: 1179540299}
 --- !u!1 &1907005422
 GameObject:
   m_ObjectHideFlags: 0
@@ -2514,6 +2478,7 @@ GameObject:
   - component: {fileID: 2078161370}
   - component: {fileID: 2078161369}
   - component: {fileID: 2078161368}
+  - component: {fileID: 2078161367}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -2521,6 +2486,23 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &2078161367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2078161366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8451f30ccca4782a9b0a1f66390b2355, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  emailTextBox: {fileID: 1907005426}
+  passwordTextBox: {fileID: 624133608}
+  loginButton: {fileID: 1797176861}
+  signupButton: {fileID: 921830988}
+  errorText: {fileID: 1179540299}
 --- !u!114 &2078161368
 MonoBehaviour:
   m_ObjectHideFlags: 0

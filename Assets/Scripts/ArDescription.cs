@@ -48,7 +48,7 @@ public class ArDescription : MonoBehaviour
                 //string arID = .ToString();
                 //Debug.Log("clicked AR Model " + btnName);
                 //StartCoroutine(Upload(btnName));
-                Debug.Log("ar ID " + Hit.transform.name);
+                Debug.Log("Description ar ID " + Hit.transform.name);
                 descriptionPanel.SetActive(true);
                 
                 GameObject modelTitle = GameObject.Find("ModelTitle");
@@ -220,6 +220,7 @@ public class ArDescription : MonoBehaviour
                 //Debug.Log("Ar models"+ JSON.Parse(request.downloadHandler.text));
                 //Debug.Log("request data: "+request.downloadHandler.text);
                 armodels= JSON.Parse(request.downloadHandler.text);
+                Debug.Log("Description Armodel  " + armodels);
                 //Debug.Log("Json object " + obj["id"].Value);
                 modelTitle.GetComponent<TMPro.TextMeshProUGUI>().text = armodels["name"].Value;
                 modelDescription.GetComponent<TMPro.TextMeshProUGUI>().text = armodels["description"].Value;
