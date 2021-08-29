@@ -20,7 +20,7 @@ public class Logout : MonoBehaviour
         // signout from firebase
         FirebaseAuth.DefaultInstance.SignOut();
         Debug.Log("Logged out " + FirebaseAuth.DefaultInstance.CurrentUser);
-        SceneManager.LoadScene("Signin");
+        SceneManager.LoadScene("MainScreen");
     }
 
     // Update is called once per frame

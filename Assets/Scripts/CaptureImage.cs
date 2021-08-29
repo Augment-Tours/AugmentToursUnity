@@ -7,11 +7,13 @@ public class CaptureImage : MonoBehaviour
 {
 
     public GameObject panel;
+    public GameObject status; 
     public GameObject captureObject; 
     // Start is called before the first frame update
     void Start()
     {
         panel = GameObject.Find("Panel");
+        status = GameObject.Find("Status");
         captureObject = GameObject.Find("CaptureButton");
         Button captureButton = GameObject.Find("CaptureButton").GetComponent<Button>();
         Debug.Log("capture image");
@@ -27,12 +29,18 @@ public class CaptureImage : MonoBehaviour
     void capture()
     {
         panel.SetActive(false);
-        //captureObject.SetActive(false);
+        status.SetActive(false);
+        captureObject.transform.localScale = new Vector3(0f, 0f, 0f);
+
+
+
+        new WaitForSeconds(5);
 
         StartCoroutine(TakeScreenshotAndSave());
 
-        panel.SetActive(true);
-        //captureObject.SetActive(true);
+       
+        //
+
     }
 
     //void capture()
@@ -49,7 +57,7 @@ public class CaptureImage : MonoBehaviour
     //}
     private IEnumerator TakeScreenshotAndSave()
     {
-       
+        
         yield return new WaitForEndOfFrame();
 
         Texture2D ss = new Texture2D(Screen.width, Screen.height, TextureFormat.RGB24, false);
@@ -63,6 +71,10 @@ public class CaptureImage : MonoBehaviour
 
         // To avoid memory leaks
         Destroy(ss);
+
+        panel.SetActive(true);
+        status.SetActive(true);
+        captureObject.transform.localScale = new Vector3(1f, 1f, 1f);
 
 
     }

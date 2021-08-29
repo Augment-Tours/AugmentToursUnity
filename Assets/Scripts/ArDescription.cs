@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class ArDescription : MonoBehaviour
@@ -12,10 +13,11 @@ public class ArDescription : MonoBehaviour
     string arId;
     public GameObject descriptionPanel;
     public JSONNode armodels;
-    public JSONNode account; 
+    public JSONNode account;
     public Button button;
-    bool favorited= false;
+    bool favorited = false;
     Sprite favFilledSprite;
+    string accountID = "";
 
     // Start is called before the first frame update
     void Start()
@@ -27,70 +29,115 @@ public class ArDescription : MonoBehaviour
         //Debug.Log("Description panel " + descriptionPanel);
     }
 
+    void OnEnable()
+    {
+        Lean.Touch.LeanTouch.OnFingerTap += HandleFingerTap;
+    }
+
+    void OnDisable()
+    {
+        Lean.Touch.LeanTouch.OnFingerTap -= HandleFingerTap;
+    }
+
+    void HandleFingerTap(Lean.Touch.LeanFinger finger)
+    {
+        if (finger.TapCount == 2)
+        {
+            RaycastHit Hit;
+            Physics.Raycast(finger.GetRay(), out Hit);
+            arId = Hit.transform.parent.name;
+            descriptionPanel.SetActive(true);
+
+            GameObject modelTitle = GameObject.Find("ModelTitle");
+            GameObject modelDescription = GameObject.Find("ModelDescription");
+            Button favButton = GameObject.Find("Favbtn").GetComponent<Button>();
+            toggleFavoriteButton(arId, favButton);
+            favButton.onClick.AddListener(() => addFavorite(arId));
+            Button closeButton = GameObject.Find("Closebtn").GetComponent<Button>();
+            closeButton.onClick.AddListener(() => closeDescription(descriptionPanel));
+
+            StartCoroutine(setARDescription(arId, modelTitle, modelDescription));
+        }
+
+    }
+
     // Update is called once per frame
     void Update()
     {
 
 
-        if (Input.touchCount > 0 && Input.touches[0].phase == TouchPhase.Began)
-        {
-           
-            Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
-            Debug.DrawRay(ray.origin,ray.direction* 10f, Color.red);
-            RaycastHit Hit;
-            
-            Debug.Log("hit " + Physics.Raycast(ray, out Hit));
+        //if (Input.touchCount > 0 && Input.touches[0].phase == TouchPhase.Began)
+        //{
 
-            if (Physics.Raycast(ray, out Hit))
-            {
-                //Debug.Log("touch count " + Input.touchCount);
-                arId = Hit.transform.parent.name;
-                //string arID = .ToString();
-                //Debug.Log("clicked AR Model " + btnName);
-                //StartCoroutine(Upload(btnName));
-                Debug.Log("Description ar ID " + Hit.transform.name);
-                descriptionPanel.SetActive(true);
+        //    Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
+        //    Debug.DrawRay(ray.origin, ray.direction * 10f, Color.red);
+        //    RaycastHit Hit;
+
+        //    //Debug.Log("hit " + Physics.Raycast(ray, out Hit));
+
+        //    if (Physics.Raycast(ray, out Hit))
+        //    {
+        //        //Debug.Log("touch count " + Input.touchCount);
+        //        arId = Hit.transform.parent.name;
+        //        //string arID = .ToString();
+        //        //Debug.Log("clicked AR Model " + btnName);
+        //        //StartCoroutine(Upload(btnName));
+        //        Debug.Log("Description ar ID " + Hit.transform.name);
+        //        //descriptionPanel.SetActive(true);
                 
-                GameObject modelTitle = GameObject.Find("ModelTitle");
-                GameObject modelDescription = GameObject.Find("ModelDescription");
-                Button favButton = GameObject.Find("Favbtn").GetComponent<Button>();
-                toggleFavoriteButton(arId, favButton);
-                favButton.onClick.AddListener(() => addFavorite(arId));
+        //        GameObject modelTitle = GameObject.Find("ModelTitle");
+        //        GameObject modelDescription = GameObject.Find("ModelDescription");
+        //        Button favButton = GameObject.Find("Favbtn").GetComponent<Button>();
+        //        toggleFavoriteButton(arId, favButton);
+        //        favButton.onClick.AddListener(() => addFavorite(arId));
 
-                Button closeButton = GameObject.Find("Closebtn").GetComponent<Button>();
-                closeButton.onClick.AddListener(() => closeDescription(descriptionPanel));
-                //GameObject favebtn = GameObject.Find("Favbtn");
-                //favebtn.AddComponent<>
-                Debug.Log("model description " + modelDescription);
-                StartCoroutine(setARDescription(arId,modelTitle,modelDescription));
-                Debug.Log("armodels " + armodels);
-               // modelTitle.GetComponent<TMPro.TextMeshProUGUI>().text = armodels["name"].Value;
-                //modelDescription.GetComponent<TMPro.TextMeshProUGUI>().text = armodels["description"].Value;
+        //        Button closeButton = GameObject.Find("Closebtn").GetComponent<Button>();
+        //        closeButton.onClick.AddListener(() => closeDescription(descriptionPanel));
+        //        //GameObject favebtn = GameObject.Find("Favbtn");
+        //        //favebtn.AddComponent<>
+        //        Debug.Log("model description " + modelDescription);
+        //        StartCoroutine(setARDescription(arId,modelTitle,modelDescription));
+        //        Debug.Log("armodels " + armodels);
+        //       // modelTitle.GetComponent<TMPro.TextMeshProUGUI>().text = armodels["name"].Value;
+        //        //modelDescription.GetComponent<TMPro.TextMeshProUGUI>().text = armodels["description"].Value;
 
-            }
-            //    for (int i = 0; i + touchCorrection < Input.touchCount; ++i)
-            //{
+        //    }
+        //    //    for (int i = 0; i + touchCorrection < Input.touchCount; ++i)
+        //    //{
 
-            //    Debug.Log("touch");
-            //    if (Input.GetTouch(i).phase.Equals(TouchPhase.Began))
-            //    {
-            //        // Construct a ray from the current touch coordinates
-            //        Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(i).position);
-            //        if (Physics.Raycast(ray, out hit))
-            //        {
+        //    //    Debug.Log("touch");
+        //    //    if (Input.GetTouch(i).phase.Equals(TouchPhase.Began))
+        //    //    {
+        //    //        // Construct a ray from the current touch coordinates
+        //    //        Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(i).position);
+        //    //        if (Physics.Raycast(ray, out hit))
+        //    //        {
 
-            //            //hit.transform.gameObject.SendMessage("OnMouseDown");
-            //        }
-            //    }
-            //}
+        //    //            //hit.transform.gameObject.SendMessage("OnMouseDown");
+        //    //        }
+        //    //    }
+        //    //}
 
-        }
+        //}
     }
 
 
     void addFavorite(string id)
     {
-        StartCoroutine(Upload(id));
+        FirebaseAuth auth = FirebaseAuth.DefaultInstance;
+        FirebaseUser user = auth.CurrentUser;
+
+        if (user == null)
+        {
+            SceneManager.LoadScene("Signin");
+        }
+
+        else
+        {
+            Debug.Log("Add to Favorite user is " + accountID);
+            StartCoroutine(Upload(id));
+        }
+      
     }
 
     void closeDescription(GameObject panel)
@@ -123,7 +170,7 @@ public class ArDescription : MonoBehaviour
         Debug.Log("upload armodels id "+armodels_id);
         WWWForm form = new WWWForm();
         form.AddField("armodels_id", armodels_id);
-        form.AddField("accounts_id", "2ec3a896-16db-4fa3-9129-5f1019e2d353");
+        form.AddField("accounts_id", accountID);
 
         using (UnityWebRequest www = UnityWebRequest.Post("https://augment-tours-backend.herokuapp.com/favorites", form))
         {
@@ -160,7 +207,7 @@ public class ArDescription : MonoBehaviour
                 //Debug.Log("request data: "+request.downloadHandler.text);
                 account = JSON.Parse(request.downloadHandler.text);
                 Debug.Log("Favorite Recieved account " + request.downloadHandler.text);
-                string accountID = account["id"].Value;
+                accountID = account["id"].Value;
 
                 string favURL = $"https://augment-tours-backend.herokuapp.com/favorites/{accountID}/{model_id}";
                 Debug.Log("Favorite Url: "+ favURL);

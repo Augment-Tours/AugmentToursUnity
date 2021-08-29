@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Firebase.Auth;
 
 public class Navigation : MonoBehaviour
 {
@@ -19,13 +20,13 @@ public class Navigation : MonoBehaviour
         ArModelButton.onClick.AddListener(() => ArModelPressed());
     }
     void FavoritesPressed() {
-        SceneManager.LoadScene("Favorites");
+        loadScene("Favorites");
     }
     void HomePressed() {
         SceneManager.LoadScene("BrowseMuseums");
     }
     void ProfilePressed() {
-        SceneManager.LoadScene("Profile");
+        loadScene("Profile");
         // Debug.Log("Profile Nav Button Pressed");
     }
 
@@ -38,5 +39,19 @@ public class Navigation : MonoBehaviour
     void Update()
     {
         
+    }
+
+    void loadScene(string scene)
+    {
+        FirebaseAuth auth = FirebaseAuth.DefaultInstance;
+        FirebaseUser user = auth.CurrentUser;
+        if(user == null)
+        {
+            SceneManager.LoadScene("Signin");
+        }
+        else
+        {
+            SceneManager.LoadScene(scene);
+        }
     }
 }

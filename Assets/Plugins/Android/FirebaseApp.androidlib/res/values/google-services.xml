@@ -6,6 +6,6 @@
   <string name="project_id" translatable="false">augmenttours</string>
   <string name="google_api_key" translatable="false">AIzaSyAO3fOYHtCfVkMb44iDgowA_7_yvxPIToI</string>
   <string name="google_crash_reporting_api_key" translatable="false">AIzaSyAO3fOYHtCfVkMb44iDgowA_7_yvxPIToI</string>
-  <string name="google_app_id" translatable="false">1:932746287928:android:770143568fa7296e11ffcd</string>
+  <string name="google_app_id" translatable="false">1:932746287928:android:8f1a142b6cf6952411ffcd</string>
   <string name="default_web_client_id" translatable="false">932746287928-d13d41qkm90m31jctf7lqphtoe0qgn77.apps.googleusercontent.com</string>
 </resources>

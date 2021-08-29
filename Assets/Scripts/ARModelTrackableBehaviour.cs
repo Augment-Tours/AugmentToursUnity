@@ -138,12 +138,20 @@ public class ARModelTrackableBehaviour : DefaultTrackableEventHandler
                 Debug.Log("scale: " + armodel.x_scale);
                 //Type bodyType = GameObject.Find("body").GetType();
                 //Debug.Log("Type " + bodyType.ToString());
-                //GameObject.Find("Ground Plane Stage"+ armodel.id + "/body").AddComponent<BoxCollider>();
+
+                GameObject.Find("Ground Plane Stage/" + armodel.id + "/body").AddComponent<BoxCollider>();
+
+                GameObject.Find("Ground Plane Stage/" + armodel.id).AddComponent<Lean.Touch.LeanSelectableByFinger>();
+                GameObject.Find("Ground Plane Stage/" + armodel.id).AddComponent<Lean.Touch.LeanDragTranslate>();
+                GameObject.Find("Ground Plane Stage/" + armodel.id).AddComponent<Lean.Touch.LeanTwistRotate>();
+                GameObject.Find("Ground Plane Stage/" + armodel.id).AddComponent<Lean.Touch.LeanPinchScale>();
+                GameObject.Find("Ground Plane Stage/" + armodel.id).AddComponent<Lean.Touch.LeanTwistRotateAxis>();
+                //GameObject.Find("Ground Plane Stage/" + armodel.id).AddComponent<Lean.Touch.LeanTouch>();
                 //model.GetComponent < UnityEngine.GameObject.Find("tiger");
                 //Debug.Log("Game Object "+)>());s
 
 
-                model.gameObject.AddComponent<BoxCollider>();
+                //model.gameObject.AddComponent<BoxCollider>();
             }
         }));
 
