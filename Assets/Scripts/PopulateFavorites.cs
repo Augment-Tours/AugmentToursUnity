@@ -6,12 +6,18 @@ using UnityEngine.UI;
 using Models;
 using SimpleJSON;
 using Firebase.Auth;
+using TMPro;
+
 public class PopulateFavorites : MonoBehaviour
 {
     // make the favorite dynamic based on the logged in user
     private const string URL = "https://augment-tours-backend.herokuapp.com/favorites/getBy/email";
 
+    private const string PROFILE_URL = "https://augment-tours-backend.herokuapp.com/accounts/getBy/email";
+
     public GameObject prefab;
+
+    public TMP_Text username;
 
     public int numberToCreate;
 
@@ -41,6 +47,27 @@ public class PopulateFavorites : MonoBehaviour
         FirebaseAuth auth = FirebaseAuth.DefaultInstance;
         FirebaseUser user = auth.CurrentUser;
         StartCoroutine(ProcessRequest(URL + "?email=" + user.Email));
+        StartCoroutine(LoadUserName(PROFILE_URL + "?email=" + user.Email));
+    }
+
+    private IEnumerator LoadUserName(string uri)
+    {
+        Debug.Log(uri);
+        using (UnityWebRequest request = UnityWebRequest.Get(uri))
+        {
+            yield return request.SendWebRequest();
+            if (request.isNetworkError)
+            {
+                Debug.Log("Error: " + request.error);
+            }
+            else
+            {
+                var fetchedUser = JSON.Parse(request.downloadHandler.text);
+
+                Debug.Log("Recieved: " + request.downloadHandler.text);
+                username.text = fetchedUser["name"];
+            }
+        }
     }
 
     private IEnumerator ProcessRequest(string uri)

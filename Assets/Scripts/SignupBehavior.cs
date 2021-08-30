@@ -133,36 +133,37 @@ public class SignupBehavior : MonoBehaviour
 
   private void GetErrorMessage(AuthError errorCode)
   {
+        Debug.Log("signin error" + errorText);
     switch (errorCode)
     {
-    //   case AuthError.MissingPassword:
-    //     passwordErrorText.text = "Missing password.";
-    //     passwordErrorText.enabled = true;
-    //     break;
-    //   case AuthError.WeakPassword:
-    //     passwordErrorText.text = "Too weak of a password.";
-    //     passwordErrorText.enabled = true;
-    //     break;
-    //   case AuthError.InvalidEmail:
-    //     emailErrorText.text = "Invalid email.";
-    //     emailErrorText.enabled = true;
-    //     break;
-    //   case AuthError.MissingEmail:
-    //     emailErrorText.text = "Missing email.";
-    //     emailErrorText.enabled = true;
-    //     break;
-    //   case AuthError.UserNotFound:
-    //     emailErrorText.text = "Account not found.";
-    //     emailErrorText.enabled = true;
-    //     break;
-    //   case AuthError.EmailAlreadyInUse:
-    //     emailErrorText.text = "Email already in use.";
-    //     emailErrorText.enabled = true;
-    //     break;
-      default:
-        errorText.text = "Unknown error occurred. " + errorCode;
-        errorText.enabled = true;
-        break;
+            case AuthError.MissingPassword:
+                errorText.text = "Missing password.";
+                errorText.enabled = true;
+                break;
+            case AuthError.WeakPassword:
+                errorText.text = "Too weak of a password.";
+                errorText.enabled = true;
+                break;
+            case AuthError.InvalidEmail:
+                errorText.text = "Invalid email.";
+                errorText.enabled = true;
+                break;
+            case AuthError.MissingEmail:
+                errorText.text = "Missing email.";
+                errorText.enabled = true;
+                break;
+            case AuthError.UserNotFound:
+                errorText.text = "Account not found.";
+                errorText.enabled = true;
+                break;
+            case AuthError.EmailAlreadyInUse:
+                errorText.text = "Email already in use.";
+                errorText.enabled = true;
+                break;
+            default:
+            errorText.text = "Unknown error occurred. " + errorCode;
+            errorText.enabled = true;
+            break;
     }
   }
 }
