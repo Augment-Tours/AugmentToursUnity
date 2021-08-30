@@ -71,7 +71,7 @@ public class PopulateFavorites : MonoBehaviour
                     // update the image of newObj
                     var imageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/220px-Image_created_with_a_mobile_phone.png";
                     var image = newObj.GetComponentInChildren<Image>();
-                    StartCoroutine(LoadImageInternet(imageUrl, image));
+                    StartCoroutine(LoadImageInternet(museums[i]["image"], image));
                 }
             }
         }

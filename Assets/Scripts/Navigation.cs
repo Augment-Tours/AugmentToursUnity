@@ -8,13 +8,13 @@ using Firebase.Auth;
 public class Navigation : MonoBehaviour
 {
     // Start is called before the first frame update
-    public Button FavoritesButton;
+    // public Button FavoritesButton;
     public Button HomeButton;
     public Button ProfileButton;
     public Button ArModelButton;
     void Start()
     {
-        FavoritesButton.onClick.AddListener(() => FavoritesPressed());
+        // FavoritesButton.onClick.AddListener(() => FavoritesPressed());
         HomeButton.onClick.AddListener(() => HomePressed());
         ProfileButton.onClick.AddListener(() => ProfilePressed());
         ArModelButton.onClick.AddListener(() => ArModelPressed());
