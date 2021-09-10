@@ -23,10 +23,20 @@ public class PopulateFavorites : MonoBehaviour
 
     public JSONNode museums;
 
+    public GameObject descriptionPanel;
+
+    public GameObject closeObject;
+
+    public JSONNode armodels;
+
     UnityWebRequest www;
     // Start is called before the first frame update
     void Start()
     {
+        descriptionPanel = GameObject.Find("DescriptionPanel");
+        closeObject = GameObject.Find("Closebtn");
+        closeObject.SetActive(false);
+        descriptionPanel.SetActive(false);
         Populate();
     }
 
@@ -93,13 +103,47 @@ public class PopulateFavorites : MonoBehaviour
                 for (int i = 0; i < museums.Count; i++)
                 {
                     newObj = (GameObject)Instantiate(prefab, transform);
+                    newObj.name = museums[i]["id"];
                     newObj.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = museums[i]["name"];
+                    string arId = museums[i]["id"];
+                    newObj.GetComponent<Button>().onClick.AddListener(() => setDescription(descriptionPanel,arId));
                     // newObj.GetComponentInChildren<
                     // update the image of newObj
-                    var imageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/220px-Image_created_with_a_mobile_phone.png";
                     var image = newObj.GetComponentInChildren<Image>();
                     StartCoroutine(LoadImageInternet(museums[i]["image"], image));
                 }
+            }
+        }
+    }
+
+    IEnumerator setARDescription(string model_id, GameObject modelTitle, GameObject modelDescription)
+    {
+        string ARURL = $"https://augment-tours-backend.herokuapp.com/armodels/{model_id}";
+
+        Debug.Log("url Description " + ARURL);
+
+        using (UnityWebRequest request = UnityWebRequest.Get(ARURL))
+        {
+
+            yield return request.SendWebRequest();
+
+            if (request.isNetworkError)
+            {
+                Debug.Log("Error: " + request.error);
+            }
+            else
+            {
+                //Debug.Log("Ar models"+ JSON.Parse(request.downloadHandler.text));
+                //Debug.Log("request data: "+request.downloadHandler.text);
+                armodels = JSON.Parse(request.downloadHandler.text);
+                Debug.Log("Description Armodel  " + armodels);
+                //Debug.Log("Json object " + obj["id"].Value);
+                modelTitle.GetComponent<TMPro.TextMeshProUGUI>().text = armodels["name"].Value;
+                modelDescription.GetComponent<TMPro.TextMeshProUGUI>().text = armodels["description"].Value;
+                closeObject.SetActive(true);
+                Button closeButton = GameObject.Find("Closebtn").GetComponent<Button>();
+                closeButton.onClick.AddListener(() => closeDescription(descriptionPanel));
+
             }
         }
     }
@@ -111,6 +155,31 @@ public class PopulateFavorites : MonoBehaviour
         yield return Link;
         Link.LoadImageIntoTexture(tex);
         web_image.sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0, 0));
+    }
+
+    void setDescription(GameObject panel, string arId)
+    {
+
+        panel.SetActive(true);
+        Animator animator = panel.GetComponent<Animator>();
+        bool isOpen = animator.GetBool("Open");
+        animator.SetBool("Open", !isOpen);
+        
+        GameObject modelTitle = GameObject.Find("ModelTitle");
+        GameObject modelDescription = GameObject.Find("ModelDescription");
+
+        
+        StartCoroutine(setARDescription(arId, modelTitle, modelDescription));
+        
+    }
+
+    void closeDescription(GameObject panel)
+    {
+        Animator animator = panel.GetComponent<Animator>();
+        bool isOpen = animator.GetBool("Open");
+        animator.SetBool("Open", !isOpen);
+        panel.SetActive(false);
+       
     }
 }
 

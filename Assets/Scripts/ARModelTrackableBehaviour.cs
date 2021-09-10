@@ -102,7 +102,7 @@ public class ARModelTrackableBehaviour : DefaultTrackableEventHandler
             //sphere.transform.SetParent(trackableBehaviour.gameObject.transform);
             Debug.Log("Model isss" + sphere);
             
-            sphere.transform.parent = GameObject.Find("Ground Plane Stage").transform;
+            //sphere.transform.parent = GameObject.Find("Ground Plane Stage").transform;
             //sphere.name = armodel.id;
             Debug.Log("sphere " + sphere);
             //cube.AddComponent<BoxCollider>();
@@ -129,7 +129,7 @@ public class ARModelTrackableBehaviour : DefaultTrackableEventHandler
             else
             {
                 model = Importer.LoadFromFile(filePath);
-                model.transform.SetParent(GameObject.Find("Ground Plane Stage").transform);
+                model.transform.SetParent(GameObject.Find(Global.trackedTarget).transform);
                 model.name = armodel.id;
                 Debug.Log("Debugging ");
                 //model.transform.position = new Vector3(100, 100, 679.2593f);
@@ -139,13 +139,13 @@ public class ARModelTrackableBehaviour : DefaultTrackableEventHandler
                 //Type bodyType = GameObject.Find("body").GetType();
                 //Debug.Log("Type " + bodyType.ToString());
 
-                GameObject.Find("Ground Plane Stage/" + armodel.id + "/body").AddComponent<BoxCollider>();
+                GameObject.Find(Global.trackedTarget+"/"+armodel.id).AddComponent<BoxCollider>();
 
-                GameObject.Find("Ground Plane Stage/" + armodel.id).AddComponent<Lean.Touch.LeanSelectableByFinger>();
-                GameObject.Find("Ground Plane Stage/" + armodel.id).AddComponent<Lean.Touch.LeanDragTranslate>();
-                GameObject.Find("Ground Plane Stage/" + armodel.id).AddComponent<Lean.Touch.LeanTwistRotate>();
-                GameObject.Find("Ground Plane Stage/" + armodel.id).AddComponent<Lean.Touch.LeanPinchScale>();
-                GameObject.Find("Ground Plane Stage/" + armodel.id).AddComponent<Lean.Touch.LeanTwistRotateAxis>();
+                GameObject.Find(Global.trackedTarget + "/" + armodel.id).AddComponent<Lean.Touch.LeanSelectableByFinger>();
+                GameObject.Find(Global.trackedTarget + "/" + armodel.id).AddComponent<Lean.Touch.LeanDragTranslate>();
+                GameObject.Find(Global.trackedTarget + "/" + armodel.id).AddComponent<Lean.Touch.LeanTwistRotate>();
+                GameObject.Find(Global.trackedTarget + "/" + armodel.id).AddComponent<Lean.Touch.LeanPinchScale>();
+                GameObject.Find(Global.trackedTarget + "/" + armodel.id).AddComponent<Lean.Touch.LeanTwistRotateAxis>();
                 //GameObject.Find("Ground Plane Stage/" + armodel.id).AddComponent<Lean.Touch.LeanTouch>();
                 //model.GetComponent < UnityEngine.GameObject.Find("tiger");
                 //Debug.Log("Game Object "+)>());s

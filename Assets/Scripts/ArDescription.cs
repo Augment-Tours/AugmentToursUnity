@@ -17,12 +17,15 @@ public class ArDescription : MonoBehaviour
     public Button button;
     bool favorited = false;
     Sprite favFilledSprite;
+    Sprite favHollowSprite;
+    string star = "";
     string accountID = "";
 
     // Start is called before the first frame update
     void Start()
     {
         favFilledSprite = Resources.Load<Sprite>("favorite_filled");
+        favHollowSprite = Resources.Load<Sprite>("favorite_hollow");
         descriptionPanel = GameObject.Find("DescriptionPanel");
         descriptionPanel.SetActive(false);
 
@@ -45,14 +48,15 @@ public class ArDescription : MonoBehaviour
         {
             RaycastHit Hit;
             Physics.Raycast(finger.GetRay(), out Hit);
-            arId = Hit.transform.parent.name;
+            //arId = Hit.transform.parent.name;
+            arId = Hit.transform.name;
             descriptionPanel.SetActive(true);
 
             GameObject modelTitle = GameObject.Find("ModelTitle");
             GameObject modelDescription = GameObject.Find("ModelDescription");
             Button favButton = GameObject.Find("Favbtn").GetComponent<Button>();
             toggleFavoriteButton(arId, favButton);
-            favButton.onClick.AddListener(() => addFavorite(arId));
+            favButton.onClick.AddListener(() => addFavorite(arId, favButton));
             Button closeButton = GameObject.Find("Closebtn").GetComponent<Button>();
             closeButton.onClick.AddListener(() => closeDescription(descriptionPanel));
 
@@ -122,7 +126,7 @@ public class ArDescription : MonoBehaviour
     }
 
 
-    void addFavorite(string id)
+    void addFavorite(string id, Button favButton)
     {
         FirebaseAuth auth = FirebaseAuth.DefaultInstance;
         FirebaseUser user = auth.CurrentUser;
@@ -135,7 +139,7 @@ public class ArDescription : MonoBehaviour
         else
         {
             Debug.Log("Add to Favorite user is " + accountID);
-            StartCoroutine(Upload(id));
+            StartCoroutine(Upload(id, favButton));
         }
       
     }
@@ -165,7 +169,7 @@ public class ArDescription : MonoBehaviour
 
     }
     
-    IEnumerator Upload(string armodels_id)
+    IEnumerator Upload(string armodels_id, Button FavoriteButton)
     {
         Debug.Log("upload armodels id "+armodels_id);
         WWWForm form = new WWWForm();
@@ -184,6 +188,19 @@ public class ArDescription : MonoBehaviour
             {
                 Debug.Log("Form upload complete!");
             }
+        }
+
+        if (favorited == true)
+        {
+            Debug.Log("favorited picture ");
+            favorited = false;
+
+            FavoriteButton.image.sprite = favHollowSprite;
+        }
+        else
+        {
+            favorited = true;
+            FavoriteButton.image.sprite = favFilledSprite;
         }
     }
 
@@ -234,6 +251,10 @@ public class ArDescription : MonoBehaviour
                             
 
                             FavoriteButton.image.sprite = favFilledSprite;
+                        }
+                        else
+                        {
+                            FavoriteButton.image.sprite = favHollowSprite;
                         }
 
                         //Debug.Log("Json object " + obj["id"].Value);

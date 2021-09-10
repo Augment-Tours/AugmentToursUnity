@@ -137,19 +137,19 @@ public class SignupBehavior : MonoBehaviour
     switch (errorCode)
     {
             case AuthError.MissingPassword:
-                errorText.text = "Missing password.";
+                errorText.text = "fill the required fields";
                 errorText.enabled = true;
                 break;
             case AuthError.WeakPassword:
-                errorText.text = "Too weak of a password.";
+                errorText.text = "Invalid password";
                 errorText.enabled = true;
                 break;
             case AuthError.InvalidEmail:
-                errorText.text = "Invalid email.";
+                errorText.text = "Invalid email";
                 errorText.enabled = true;
                 break;
             case AuthError.MissingEmail:
-                errorText.text = "Missing email.";
+                errorText.text = "fill the required fields";
                 errorText.enabled = true;
                 break;
             case AuthError.UserNotFound:
