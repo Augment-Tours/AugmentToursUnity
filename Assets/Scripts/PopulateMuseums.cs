@@ -62,9 +62,20 @@ public class PopulateMuseums : MonoBehaviour
                 for (int i = 0; i < museums.Count; i++) {
                     newObj = (GameObject) Instantiate(prefab, transform);
                     newObj.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = museums[i]["name"];
+                    var image = newObj.GetComponentInChildren<Image>();
+                    StartCoroutine(LoadImageInternet(museums[i]["image"], image));
                 }
             }
         }
+    }
+
+    IEnumerator LoadImageInternet(string imageUrl, Image web_image)
+    {
+        Texture2D tex = new Texture2D(4, 4, TextureFormat.DXT1, false);
+        WWW Link = new WWW(imageUrl);
+        yield return Link;
+        Link.LoadImageIntoTexture(tex);
+        web_image.sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0, 0));
     }
 }
 

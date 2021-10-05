@@ -7,6 +7,7 @@ using Models;
 using SimpleJSON;
 using Firebase.Auth;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class PopulateFavorites : MonoBehaviour
 {
@@ -27,15 +28,26 @@ public class PopulateFavorites : MonoBehaviour
 
     public GameObject closeObject;
 
+    public GameObject favObject;
+
     public JSONNode armodels;
 
+    public JSONNode account;
+    bool favorited = false;
+    Sprite favFilledSprite;
+    Sprite favHollowSprite;
+    string accountID = "";
     UnityWebRequest www;
     // Start is called before the first frame update
     void Start()
     {
+        favFilledSprite = Resources.Load<Sprite>("favorite_filled");
+        favHollowSprite = Resources.Load<Sprite>("favorite_hollow");
         descriptionPanel = GameObject.Find("DescriptionPanel");
         closeObject = GameObject.Find("Closebtn");
+        favObject = GameObject.Find("Favbtn");
         closeObject.SetActive(false);
+        favObject.SetActive(false);
         descriptionPanel.SetActive(false);
         Populate();
     }
@@ -141,8 +153,152 @@ public class PopulateFavorites : MonoBehaviour
                 modelTitle.GetComponent<TMPro.TextMeshProUGUI>().text = armodels["name"].Value;
                 modelDescription.GetComponent<TMPro.TextMeshProUGUI>().text = armodels["description"].Value;
                 closeObject.SetActive(true);
+                favObject.SetActive(true);
                 Button closeButton = GameObject.Find("Closebtn").GetComponent<Button>();
+                Button favButton = GameObject.Find("Favbtn").GetComponent<Button>();
                 closeButton.onClick.AddListener(() => closeDescription(descriptionPanel));
+                toggleFavoriteButton(model_id, favButton);
+                favButton.onClick.AddListener(() => addFavorite(model_id, favButton));
+
+            }
+        }
+    }
+
+    void addFavorite(string id, Button favButton)
+    {
+        FirebaseAuth auth = FirebaseAuth.DefaultInstance;
+        FirebaseUser user = auth.CurrentUser;
+
+        if (user == null)
+        {
+            SceneManager.LoadScene("Signin");
+        }
+
+        else
+        {
+            Debug.Log("Add to Favorite user is " + accountID);
+            StartCoroutine(Upload(id, favButton));
+        }
+
+    }
+
+    IEnumerator Upload(string armodels_id, Button FavoriteButton)
+    {
+        Debug.Log("upload armodels id " + armodels_id);
+        WWWForm form = new WWWForm();
+        form.AddField("armodels_id", armodels_id);
+        form.AddField("accounts_id", accountID);
+
+        using (UnityWebRequest www = UnityWebRequest.Post("https://augment-tours-backend.herokuapp.com/favorites", form))
+        {
+            yield return www.SendWebRequest();
+
+            if (www.result != UnityWebRequest.Result.Success)
+            {
+                Debug.Log(www.error);
+            }
+            else
+            {
+                Debug.Log("Form upload complete!");
+            }
+        }
+
+        if (favorited == true)
+        {
+            Debug.Log("favorited picture ");
+            favorited = false;
+
+            GameObject arModelObject = GameObject.Find("Canvas/Panel/Scroll View/Viewport/Content/" + armodels_id);
+            Destroy(arModelObject);
+
+           
+        }
+        else
+        {
+            GameObject arModelObject = GameObject.Find("Canvas/Panel/Scroll View/Viewport/Content/" + armodels_id);
+            Destroy(arModelObject);
+        }
+    }
+
+    void toggleFavoriteButton(string model_id, Button favButton)
+    {
+        FirebaseAuth auth = FirebaseAuth.DefaultInstance;
+        FirebaseUser user = auth.CurrentUser;
+
+        if (user == null)
+        {
+
+        }
+
+        else
+        {
+            Debug.Log("Favorite User is " + user.Email);
+            StartCoroutine(checkUserFavorite(user.Email, model_id, favButton));
+        }
+
+
+
+    }
+
+    IEnumerator checkUserFavorite(string email, string model_id, Button FavoriteButton)
+    {
+        string accountURL = $"https://augment-tours-backend.herokuapp.com/accounts/getBy/email/?email={email}";
+        Debug.Log("Account URL " + accountURL);
+
+        using (UnityWebRequest request = UnityWebRequest.Get(accountURL))
+        {
+
+            yield return request.SendWebRequest();
+
+            if (request.isNetworkError)
+            {
+                Debug.Log("Error: " + request.error);
+            }
+            else
+            {
+                //Debug.Log("Ar models"+ JSON.Parse(request.downloadHandler.text));
+                //Debug.Log("request data: "+request.downloadHandler.text);
+                account = JSON.Parse(request.downloadHandler.text);
+                Debug.Log("Favorite Recieved account " + request.downloadHandler.text);
+                accountID = account["id"].Value;
+
+                string favURL = $"https://augment-tours-backend.herokuapp.com/favorites/{accountID}/{model_id}";
+                Debug.Log("Favorite Url: " + favURL);
+                using (UnityWebRequest favRequest = UnityWebRequest.Get(favURL))
+                {
+
+                    yield return favRequest.SendWebRequest();
+
+                    if (favRequest.isNetworkError)
+                    {
+                        Debug.Log("Error: " + request.error);
+                    }
+                    else
+                    {
+                        //Debug.Log("Ar models"+ JSON.Parse(request.downloadHandler.text));
+                        //Debug.Log("request data: "+request.downloadHandler.text);
+                        Debug.Log("Favorite Response " + favRequest.downloadHandler.text);
+                        //JSONNode favResponse = JSON.Parse(favRequest.downloadHandler.text);
+                        //Debug.Log("Favorite JSON " + favResponse);
+                        favorited = favRequest.downloadHandler.text == "true";
+                        if (favorited == true)
+                        {
+                            Debug.Log("favorited picture ");
+
+
+                            FavoriteButton.image.sprite = favFilledSprite;
+                        }
+                        else
+                        {
+                            FavoriteButton.image.sprite = favHollowSprite;
+                        }
+
+                        //Debug.Log("Json object " + obj["id"].Value);
+
+
+
+                    }
+                }
 
             }
         }

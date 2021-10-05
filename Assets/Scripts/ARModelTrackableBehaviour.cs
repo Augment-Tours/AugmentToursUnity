@@ -27,6 +27,8 @@ public class ARModelTrackableBehaviour : DefaultTrackableEventHandler
             string URL = $"https://augment-tours-backend.herokuapp.com/targets/{base.gameObject.name}";
             StartCoroutine(ProcessRequest(URL));
             Global.trackedTarget = base.gameObject.name;
+            //GameObject gp = GameObject.Find("Ground Plane Stage");
+            //gp.transform.SetParent(GameObject.Find(Global.trackedTarget).transform);
             status = GameObject.Find("Status").GetComponent<TMP_Text>();
             status.text = "AR target Scanned";
         }
@@ -92,6 +94,7 @@ public class ARModelTrackableBehaviour : DefaultTrackableEventHandler
             Debug.Log("Armodel " + j + " " + armodel.model);
 
             // TODO: add virtual content as child object(s)
+           
             GameObject sphere = new GameObject();
             //sphere.gameObject.AddComponent<BoxCollider>();
             //sphere.AddComponent<BoxCollider>();
@@ -129,7 +132,7 @@ public class ARModelTrackableBehaviour : DefaultTrackableEventHandler
             else
             {
                 model = Importer.LoadFromFile(filePath);
-                model.transform.SetParent(GameObject.Find(Global.trackedTarget).transform);
+                model.transform.SetParent(GameObject.Find(base.gameObject.name).transform);
                 model.name = armodel.id;
                 Debug.Log("Debugging ");
                 //model.transform.position = new Vector3(100, 100, 679.2593f);
@@ -139,13 +142,13 @@ public class ARModelTrackableBehaviour : DefaultTrackableEventHandler
                 //Type bodyType = GameObject.Find("body").GetType();
                 //Debug.Log("Type " + bodyType.ToString());
 
-                GameObject.Find(Global.trackedTarget+"/"+armodel.id).AddComponent<BoxCollider>();
+                GameObject.Find(base.gameObject.name +"/"+ armodel.id).AddComponent<BoxCollider>();
 
-                GameObject.Find(Global.trackedTarget + "/" + armodel.id).AddComponent<Lean.Touch.LeanSelectableByFinger>();
-                GameObject.Find(Global.trackedTarget + "/" + armodel.id).AddComponent<Lean.Touch.LeanDragTranslate>();
-                GameObject.Find(Global.trackedTarget + "/" + armodel.id).AddComponent<Lean.Touch.LeanTwistRotate>();
-                GameObject.Find(Global.trackedTarget + "/" + armodel.id).AddComponent<Lean.Touch.LeanPinchScale>();
-                GameObject.Find(Global.trackedTarget + "/" + armodel.id).AddComponent<Lean.Touch.LeanTwistRotateAxis>();
+                GameObject.Find(base.gameObject.name + "/" + armodel.id).AddComponent<Lean.Touch.LeanSelectableByFinger>();
+                GameObject.Find(base.gameObject.name + "/" + armodel.id).AddComponent<Lean.Touch.LeanDragTranslate>();
+                GameObject.Find(base.gameObject.name + "/" + armodel.id).AddComponent<Lean.Touch.LeanTwistRotate>();
+                GameObject.Find(base.gameObject.name + "/" + armodel.id).AddComponent<Lean.Touch.LeanPinchScale>();
+                GameObject.Find(base.gameObject.name + "/" + armodel.id).AddComponent<Lean.Touch.LeanTwistRotateAxis>();
                 //GameObject.Find("Ground Plane Stage/" + armodel.id).AddComponent<Lean.Touch.LeanTouch>();
                 //model.GetComponent < UnityEngine.GameObject.Find("tiger");
                 //Debug.Log("Game Object "+)>());s
